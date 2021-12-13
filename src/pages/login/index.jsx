@@ -11,7 +11,8 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const login = () => {
+  const login = (e) => {
+    e.preventDefault();
     const user = { email, password };
     axios.post(`${process.env.REACT_APP_BACKEND_URL}/login`, user).then((response) => {
       let storedData = (key, value) => {
@@ -21,8 +22,8 @@ const LoginPage = () => {
       storedData('email', response.data.decode.email);
       storedData('first_name', response.data.decode.first_name);
       storedData('last_name', response.data.decode.last_name);
+      history.push(ROUTES.APP_TODO);
     });
-    history.push(ROUTES.APP_TODO);
   };
 
   return (
@@ -43,9 +44,7 @@ const LoginPage = () => {
           onChange={(value) => setPassword(value)}
           type="password"
         />
-        <Button className="login-page__button btn-link" onClick={login}>
-          Login
-        </Button>
+        <Button className="login-page__button btn-link">Login</Button>
         <p>
           Or you can <Link to="/register">register</Link> here
         </p>

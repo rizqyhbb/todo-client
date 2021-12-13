@@ -9,4 +9,22 @@ h1 {
 h2 {
   font-size: 24px !important
 }
+.btn {
+  text-decoration: none;
+      font-size: 20px;
+      color: rgba(63, 63, 63, 1);
+      &:hover {
+        color: black;
+      };
+      padding: 0;
+      &:focus {
+      box-shadow: none !important;
+      svg {
+        path {
+          fill: magenta;
+        }
+      }
+
+      }
+}
 @import 'bootstrap';

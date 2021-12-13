@@ -12,16 +12,38 @@
       font-size: 20px;
       margin-bottom: 5px;
       font-style: italic;
+      // @media (max-width: 640px) {
+      //   display: none;
+      // }
     }
+
+    // &__floating-btn {
+    //   display: none;
+    //   @media (max-width: 640px) {
+    //     display: flex;
+    //     height: 128px;
+    //     width: 128px;
+    //     border-radius: 50%;
+    //     position: fixed;
+    //     bottom: 16px;
+    //     right: 16px;
+    //   }
+    // }
     
-    &__button {
-      text-decoration: none;
-      font-size: 20px;
-      color: rgba(63, 63, 63, 1);
-      &:hover {
-        color: black;
-      };
-      padding: 0;
+    // &__button {
+    //   text-decoration: none;
+    //   font-size: 20px;
+    //   color: rgba(63, 63, 63, 1);
+    //   &:hover {
+    //     color: black;
+    //   };
+    //   padding: 0;
+    // }
+
+    &__todolist {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
   
 }

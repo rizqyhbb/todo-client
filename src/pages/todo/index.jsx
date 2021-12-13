@@ -6,6 +6,10 @@ import { Card, Navbar, Input, Button } from '../../components';
 
 const TodoPage = () => {
   const [todoList, setTodoList] = useState([]);
+  const [task, setTask] = useState('');
+  const [incompletedTask, setIncompletedTask] = useState([]);
+  const [completedTask, setCompletedTask] = useState([]);
+
   const token = window.localStorage.getItem('token');
   const config = {
     headers: { Authorization: `Bearer ${token}` }
@@ -19,21 +23,51 @@ const TodoPage = () => {
   useEffect(() => {
     data();
   }, []);
+  const incompleteTask = todoList.filter((some) => some.status === 'incomplete');
+  const completeTask = todoList.filter((some) => some.status === 'complete');
 
   return (
     <div className="todo-page container">
       <Navbar />
       <form className="todo-page__form">
-        <Input className="todo-page__input" placeholder="Write some task here" />
+        <Input
+          className="todo-page__input"
+          placeholder="Write some task here"
+          value={task}
+          onChange={(value) => setTask(value)}
+        />
         <Button>Add</Button>
       </form>
-      <div className="todo-page__todolist">
-        <h1>
-          Todo <span className="fw-bold">List</span>
-        </h1>
-        {todoList.map((data) => (
-          <Card key={data.id_task}>{data.todo}</Card>
-        ))}
+      <div className="row todo-page__todolist">
+        <div className="col-6 mt-3">
+          <h1>
+            Todo <span className="fw-bold">List</span>
+          </h1>
+          {incompleteTask.length > 0 ? (
+            incompleteTask.map((data) => (
+              <Card
+                onDelete={() => console.log('delete')}
+                onUpdate={() => console.log('update')}
+                key={data.id_task}>
+                {data.todo}
+              </Card>
+            ))
+          ) : (
+            <p>There are no Todo</p>
+          )}
+        </div>
+      </div>
+      <div className="row todo-page__todolist">
+        <div className="col-6 mt-3">
+          <h1>
+            Complete <span className="fw-bold">List</span>
+          </h1>
+          {completeTask.length > 0 ? (
+            completeTask.map((data) => <Card key={data.id_task}>{data.todo}</Card>)
+          ) : (
+            <p>There are no complete task</p>
+          )}
+        </div>
       </div>
     </div>
   );
