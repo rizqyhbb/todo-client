@@ -20,7 +20,7 @@ export const Navbar = () => {
       setlogout('Logout');
       setIsDisabled(false);
     }
-  }, [storedData]);
+  }, [storedData.token]);
 
   const signout = () => {
     window.localStorage.clear();
