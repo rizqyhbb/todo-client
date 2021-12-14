@@ -1,8 +1,9 @@
 /* eslint-disable no-undef */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Input, Button, Navbar } from '../../components';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { ROUTES } from '../../routes';
 
 const RegisterPage = () => {
   const history = useHistory();
@@ -12,13 +13,18 @@ const RegisterPage = () => {
   const [first_name, setFirstName] = useState('');
   const [last_name, setLastName] = useState('');
 
-  const register = () => {
-    const data = { email, password, first_name, last_name };
-    axios.post(`${process.env.REACT_APP_BACKEND_URL}/register`, data).then((response) => {
-      console.log(response);
-    });
-
-    history.push('/');
+  const register = (e) => {
+    e.preventDefault();
+    if (password !== reTypePassword) {
+      alert('make sure to correctly retype your password');
+    } else {
+      const data = { email, password, first_name, last_name };
+      axios.post(`${process.env.REACT_APP_BACKEND_URL}/register`, data).then((response) => {
+        console.log(response);
+        alert('you are registered, you can login now');
+        history.push(ROUTES.LOG_IN);
+      });
+    }
   };
 
   return (

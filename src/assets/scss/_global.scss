@@ -10,18 +10,19 @@ h2 {
   font-size: 24px !important
 }
 .btn {
-  text-decoration: none;
-      font-size: 20px;
-      color: rgba(63, 63, 63, 1);
+  text-decoration: none !important;
+      font-size: 20px !important;
+      color: rgba(63, 63, 63, 1) !important;
       &:hover {
-        color: black;
+        color: black !important;
       };
-      padding: 0;
+      padding: 0 !important;
       &:focus {
       box-shadow: none !important;
       svg {
         path {
-          fill: magenta;
+          color: rgba(63, 63, 63, 1);
+          fill: black;
         }
       }
 

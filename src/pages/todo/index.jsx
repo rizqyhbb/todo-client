@@ -7,8 +7,8 @@ import { Card, Navbar, Input, Button } from '../../components';
 const TodoPage = () => {
   const [todoList, setTodoList] = useState([]);
   const [task, setTask] = useState('');
-  const [incompletedTask, setIncompletedTask] = useState([]);
-  const [completedTask, setCompletedTask] = useState([]);
+  const [incompleteTask, setIncompleteTask] = useState([]);
+  const [completeTask, setCompleteTask] = useState([]);
 
   const token = window.localStorage.getItem('token');
   const config = {
@@ -19,24 +19,41 @@ const TodoPage = () => {
     const todo = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/task`, config);
     return setTodoList(todo.data);
   };
+  const deleteAction = async (id) => {
+    const deleteTask = await axios.delete(
+      `${process.env.REACT_APP_BACKEND_URL}/task/${id}`,
+      config
+    );
+    return console.log(deleteTask);
+  };
+
+  const addAction = async (e) => {
+    e.preventDefault();
+    const data = { todo: task };
+    const addTask = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/task`, data, config);
+    return console.log(addTask);
+  };
 
   useEffect(() => {
     data();
   }, []);
-  const incompleteTask = todoList.filter((some) => some.status === 'incomplete');
-  const completeTask = todoList.filter((some) => some.status === 'complete');
+
+  useEffect(() => {
+    setIncompleteTask(todoList.filter((some) => some.status === 'incomplete'));
+    setCompleteTask(todoList.filter((some) => some.status === 'complete'));
+  }, [todoList]);
 
   return (
     <div className="todo-page container">
       <Navbar />
-      <form className="todo-page__form">
+      <form onSubmit={addAction} className="todo-page__form">
         <Input
           className="todo-page__input"
           placeholder="Write some task here"
           value={task}
           onChange={(value) => setTask(value)}
         />
-        <Button>Add</Button>
+        <Button className="ms-3">Add</Button>
       </form>
       <div className="row todo-page__todolist">
         <div className="col-6 mt-3">
@@ -46,7 +63,7 @@ const TodoPage = () => {
           {incompleteTask.length > 0 ? (
             incompleteTask.map((data) => (
               <Card
-                onDelete={() => console.log('delete')}
+                onDelete={() => deleteAction(data.id_task)}
                 onUpdate={() => console.log('update')}
                 key={data.id_task}>
                 {data.todo}

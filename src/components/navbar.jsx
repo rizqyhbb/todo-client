@@ -9,10 +9,8 @@ export const Navbar = () => {
   const [logout, setlogout] = useState('');
   const [disabled, setIsDisabled] = useState(true);
   const storedData = window.localStorage;
-  const token = storedData.getItem('token');
 
   useEffect(() => {
-    console.log(storedData);
     if (!storedData.token) {
       setNavBrand(' App');
       setlogout(null);
@@ -23,10 +21,6 @@ export const Navbar = () => {
       setIsDisabled(false);
     }
   }, [storedData.token]);
-
-  useEffect(() => {
-    console.log('TOKEN', token);
-  }, [token]);
 
   const signout = () => {
     window.localStorage.clear();
