@@ -17,20 +17,23 @@ const TodoPage = () => {
 
   const data = async () => {
     const todo = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/task`, config);
-    return setTodoList(todo.data);
+    setTodoList(todo.data);
   };
   const deleteAction = async (id) => {
     const deleteTask = await axios.delete(
       `${process.env.REACT_APP_BACKEND_URL}/task/${id}`,
       config
     );
+    data();
     return console.log(deleteTask);
   };
 
   const addAction = async (e) => {
     e.preventDefault();
-    const data = { todo: task };
-    const addTask = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/task`, data, config);
+    const newTodo = { todo: task };
+    const addTask = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/task`, newTodo, config);
+    data();
+    setTask('');
     return console.log(addTask);
   };
 
@@ -46,15 +49,17 @@ const TodoPage = () => {
   return (
     <div className="todo-page container">
       <Navbar />
-      <form onSubmit={addAction} className="todo-page__form">
-        <Input
-          className="todo-page__input"
-          placeholder="Write some task here"
-          value={task}
-          onChange={(value) => setTask(value)}
-        />
-        <Button className="ms-3">Add</Button>
-      </form>
+      <div className="col">
+        <form onSubmit={addAction} className="todo-page__form">
+          <Input
+            className="todo-page__input"
+            placeholder="Write some task here"
+            value={task}
+            onChange={(value) => setTask(value)}
+          />
+          <Button className="ms-3">Add</Button>
+        </form>
+      </div>
       <div className="row todo-page__todolist">
         <div className="col-6 mt-3">
           <h1>
