@@ -1,18 +1,21 @@
 /* eslint-disable react/prop-types */
-import { BsXCircle, BsPencil } from 'react-icons/bs';
+import classNames from 'classnames';
+import { BsXCircle } from 'react-icons/bs';
 import { Button } from './button';
 
-export const Card = ({ children, onDelete, onUpdate, onChange }) => {
+export const Card = ({ children, onDelete, onChange, defaultChecked, className }) => {
   return (
     <div className="card-component d-flex justify-content-between">
       <div className="d-flex align-items-center">
-        <input className="card-component__input" type="checkbox" onChange={onChange} />
-        <p className="card-component__text mb-0 ms-2">{children}</p>
+        <input
+          className="card-component__input"
+          type="checkbox"
+          onChange={onChange}
+          defaultChecked={defaultChecked}
+        />
+        <p className={classNames('card-component__text mb-0 ms-2', className)}>{children}</p>
       </div>
       <div>
-        <Button className="mx-1">
-          <BsPencil onClick={onUpdate} />
-        </Button>
         <Button className="mx-1">
           <BsXCircle onClick={onDelete} />
         </Button>

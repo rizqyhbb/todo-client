@@ -2,13 +2,14 @@
 /* eslint-disable no-undef */
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Card, Navbar, Input, Button } from '../../components';
+import { Card, Navbar, Input, Button, Modal } from '../../components';
 
 const TodoPage = () => {
   const [todoList, setTodoList] = useState([]);
   const [task, setTask] = useState('');
   const [incompleteTask, setIncompleteTask] = useState([]);
   const [completeTask, setCompleteTask] = useState([]);
+  const [isComplete, setIsComplete] = useState(false);
 
   const token = window.localStorage.getItem('token');
   const config = {
@@ -37,13 +38,27 @@ const TodoPage = () => {
     return console.log(addTask);
   };
 
+  const updateAction = async (status, id_task) => {
+    // console.log(e.target.value);
+    // const value = e.target.value;
+    const payload = { complete: status };
+    console.log('PAYLOAD', payload);
+    const updateTask = await axios.patch(
+      `${process.env.REACT_APP_BACKEND_URL}/task/${id_task}`,
+      payload,
+      config
+    );
+    data();
+    return console.log(updateTask);
+  };
+
   useEffect(() => {
     data();
   }, []);
 
   useEffect(() => {
-    setIncompleteTask(todoList.filter((some) => some.status === 'incomplete'));
-    setCompleteTask(todoList.filter((some) => some.status === 'complete'));
+    setIncompleteTask(todoList.filter((data) => data.complete === false));
+    setCompleteTask(todoList.filter((data) => data.complete === true));
   }, [todoList]);
 
   return (
@@ -69,8 +84,9 @@ const TodoPage = () => {
             incompleteTask.map((data) => (
               <Card
                 onDelete={() => deleteAction(data.id_task)}
-                onUpdate={() => console.log('update')}
-                key={data.id_task}>
+                key={data.id_task}
+                defaultChecked={data.complete}
+                onChange={() => updateAction(true, data.id_task)}>
                 {data.todo}
               </Card>
             ))
@@ -85,7 +101,16 @@ const TodoPage = () => {
             Complete <span className="fw-bold">List</span>
           </h1>
           {completeTask.length > 0 ? (
-            completeTask.map((data) => <Card key={data.id_task}>{data.todo}</Card>)
+            completeTask.map((data) => (
+              <Card
+                className="text-decoration-line-through"
+                onDelete={() => deleteAction(data.id_task)}
+                key={data.id_task}
+                defaultChecked={data.complete}
+                onChange={() => updateAction(false, data.id_task)}>
+                {data.todo}
+              </Card>
+            ))
           ) : (
             <p>There are no complete task</p>
           )}
