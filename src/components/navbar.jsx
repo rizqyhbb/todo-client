@@ -1,9 +1,11 @@
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button } from '.';
+import { AuthContext } from '../context/authContext';
+import { Button } from './button';
 
 export const Navbar = () => {
+  // const { isAuth, setIsAuth } = useContext(AuthContext);
   const history = useHistory();
   const [navBrand, setNavBrand] = useState('');
   const [logout, setlogout] = useState('');
@@ -22,10 +24,16 @@ export const Navbar = () => {
     }
   }, [storedData.token]);
 
-  const signout = () => {
+  const signout = (e) => {
+    e.preventDefault();
     window.localStorage.clear();
+    // setIsAuth(false);
     history.push('/');
   };
+
+  // useEffect(() => {
+  //   console.log('NAVBAR', isAuth);
+  // }, [signout]);
   return (
     <nav className="d-flex justify-content-between">
       <div className="row">

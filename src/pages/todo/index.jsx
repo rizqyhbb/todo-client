@@ -1,15 +1,17 @@
 /* eslint-disable react/jsx-key */
 /* eslint-disable no-undef */
 import axios from 'axios';
+import { useContext } from 'react';
 import { useEffect, useState } from 'react';
 import { Card, Navbar, Input, Button, Modal } from '../../components';
+import { AuthContext } from '../../context/authContext';
 
 const TodoPage = () => {
+  // const { isAuth, setIsAuth } = useContext(AuthContext);
   const [todoList, setTodoList] = useState([]);
   const [task, setTask] = useState('');
   const [incompleteTask, setIncompleteTask] = useState([]);
   const [completeTask, setCompleteTask] = useState([]);
-  const [isComplete, setIsComplete] = useState(false);
 
   const token = window.localStorage.getItem('token');
   const config = {
@@ -39,8 +41,6 @@ const TodoPage = () => {
   };
 
   const updateAction = async (status, id_task) => {
-    // console.log(e.target.value);
-    // const value = e.target.value;
     const payload = { complete: status };
     console.log('PAYLOAD', payload);
     const updateTask = await axios.patch(
@@ -61,6 +61,9 @@ const TodoPage = () => {
     setCompleteTask(todoList.filter((data) => data.complete === true));
   }, [todoList]);
 
+  // useEffect(() => {
+  //   console.log('TODO', isAuth);
+  // }, []);
   return (
     <div className="todo-page container">
       <Navbar />

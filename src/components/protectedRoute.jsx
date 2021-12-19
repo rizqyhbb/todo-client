@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import { Route, Redirect } from 'react-router-dom';
 
-export const ProtectedRoute = ({ isAuth, component: Component, ...rest }) => {
+export const ProtectedRoute = ({ isAuth: isAuth, component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
