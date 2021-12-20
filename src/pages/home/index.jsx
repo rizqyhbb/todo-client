@@ -14,8 +14,11 @@ const HomePage = () => {
         <h1>
           It is just a Todo <span className="fw-bold">App</span>
         </h1>
-        <Link to="/login">Login</Link>
-        <Link to="/register">Register</Link>
+        <div>
+          <button className="">
+            <Link to="/login">Get Started</Link>
+          </button>
+        </div>
       </div>
     </div>
   );
