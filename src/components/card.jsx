@@ -16,7 +16,7 @@ export const Card = ({ children, onDelete, onChange, defaultChecked, className }
         <p className={classNames('card-component__text mb-0 ms-2', className)}>{children}</p>
       </div>
       <div>
-        <Button className="mx-1">
+        <Button className="mx-1 fs-6">
           <BsXCircle onClick={onDelete} />
         </Button>
       </div>

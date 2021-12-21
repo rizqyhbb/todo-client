@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Input, Button, Navbar } from '../../components';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
@@ -12,19 +12,38 @@ const RegisterPage = () => {
   const [reTypePassword, setReTypePassword] = useState('');
   const [first_name, setFirstName] = useState('');
   const [last_name, setLastName] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
 
-  const register = (e) => {
-    e.preventDefault();
-    if (password !== reTypePassword) {
-      alert('make sure to correctly retype your password');
-    } else {
-      const data = { email, password, first_name, last_name };
-      axios.post(`${process.env.REACT_APP_BACKEND_URL}/register`, data).then((response) => {
+  const register = async (e) => {
+    try {
+      setIsLoading(true);
+      e.preventDefault();
+      if (password !== reTypePassword) {
+        alert('make sure to correctly retype your password');
+        setIsLoading(false);
+        setPassword('');
+        setReTypePassword('');
+      } else {
+        const data = { email, password, first_name, last_name };
+        await axios.post(`${process.env.REACT_APP_BACKEND_URL}/register`, data);
         alert('you are registered, you can login now');
         history.push(ROUTES.LOG_IN);
-      });
+      }
+    } catch (err) {
+      alert(err);
+      setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!email || !password || !reTypePassword || !first_name || !last_name) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
+  }, [email, password.reTypePassword, first_name, last_name]);
+
   return (
     <div className="login-page container">
       <Navbar />
@@ -64,8 +83,8 @@ const RegisterPage = () => {
           value={last_name}
           onChange={(value) => setLastName(value)}
         />
-        <Button className="login-page__button btn-link" onClick={register}>
-          Register
+        <Button className="login-page__button btn-link" disabled={isDisabled}>
+          {isLoading ? <span className="spinner-border spinner-border-sm "></span> : 'Register'}
         </Button>
         <p>
           Have an account? <Link to="/login">login</Link> here

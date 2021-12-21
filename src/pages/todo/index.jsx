@@ -20,25 +20,34 @@ const TodoPage = () => {
     setTodoList(todo.data);
   };
   const deleteAction = async (id) => {
-    const deleteTask = await axios.delete(
-      `${process.env.REACT_APP_BACKEND_URL}/task/${id}`,
-      config
-    );
-    data();
+    try {
+      await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/task/${id}`, config);
+      data();
+    } catch (err) {
+      alert(err);
+    }
   };
 
   const addAction = async (e) => {
-    e.preventDefault();
-    const newTodo = { todo: task };
-    const addTask = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/task`, newTodo, config);
-    data();
-    setTask('');
+    try {
+      e.preventDefault();
+      const newTodo = { todo: task };
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/task`, newTodo, config);
+      data();
+      setTask('');
+    } catch (err) {
+      alert(err);
+    }
   };
 
   const updateAction = async (status, id_task) => {
-    const payload = { complete: status };
-    await axios.patch(`${process.env.REACT_APP_BACKEND_URL}/task/${id_task}`, payload, config);
-    data();
+    try {
+      const payload = { complete: status };
+      await axios.patch(`${process.env.REACT_APP_BACKEND_URL}/task/${id_task}`, payload, config);
+      data();
+    } catch (err) {
+      alert(err);
+    }
   };
 
   useEffect(() => {
@@ -53,10 +62,10 @@ const TodoPage = () => {
   return (
     <div className="todo-page container">
       <Navbar />
-      <div className="col">
+      <div className="row">
         <form onSubmit={addAction} className="todo-page__form">
           <Input
-            className="todo-page__input"
+            className="todo-page__input col-md-6 col-7"
             placeholder="Write some task here"
             value={task}
             onChange={(value) => setTask(value)}
@@ -65,7 +74,7 @@ const TodoPage = () => {
         </form>
       </div>
       <div className="row todo-page__todolist">
-        <div className="col-6 mt-3">
+        <div className="col-md-6 mt-3 col-10">
           <h1>
             Todo <span className="fw-bold">List</span>
           </h1>
@@ -85,7 +94,7 @@ const TodoPage = () => {
         </div>
       </div>
       <div className="row todo-page__todolist">
-        <div className="col-6 mt-3">
+        <div className="col-md-6 mt-3 col-10">
           <h1>
             Complete <span className="fw-bold">List</span>
           </h1>

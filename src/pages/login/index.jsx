@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import { Input, Button, Navbar } from '../../components';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useHistory, Link } from 'react-router-dom';
 import { ROUTES } from '../../routes';
@@ -11,11 +11,15 @@ const LoginPage = () => {
   const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const login = (e) => {
-    e.preventDefault();
-    const user = { email, password };
-    axios.post(`${process.env.REACT_APP_BACKEND_URL}/login`, user).then((response) => {
+  const login = async (e) => {
+    try {
+      setIsLoading(true);
+      e.preventDefault();
+      const user = { email, password };
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/login`, user);
       let storedData = (key, value) => {
         window.localStorage.setItem(key, value);
       };
@@ -26,8 +30,19 @@ const LoginPage = () => {
       storedData('isAuth', true);
       setIsAuth(window.localStorage.getItem('isAuth'));
       history.push(ROUTES.APP_TODO);
-    });
+    } catch (err) {
+      alert(err);
+      setIsLoading(false);
+    }
   };
+
+  useEffect(() => {
+    if (!email || !password) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
+  }, [email, password]);
 
   return (
     <div className="login-page container">
@@ -47,7 +62,9 @@ const LoginPage = () => {
           onChange={(value) => setPassword(value)}
           type="password"
         />
-        <Button className="login-page__button btn-link">Login</Button>
+        <Button className="login-page__button btn-link" disabled={isDisabled}>
+          {isLoading ? <span className="spinner-border spinner-border-sm "></span> : 'Login'}
+        </Button>
         <p>
           Or you can <Link to="/register">register</Link> here
         </p>
