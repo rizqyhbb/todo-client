@@ -5,12 +5,12 @@ import { ROUTES } from '../routes';
 export const PublicRoute = ({ isAuth: isAuth, component: Component, restricted, ...rest }) => (
   <Route
     {...rest}
-    render={(props) =>
-      isAuth && restricted ? (
-        <Redirect to={{ pathname: ROUTES.APP_TODO, state: { from: props.location } }} />
-      ) : (
-        <Component />
-      )
-    }
+    render={(props) => {
+      if (isAuth && restricted) {
+        return <Redirect to={{ pathname: ROUTES.APP_TODO, state: { from: props.location } }} />;
+      } else {
+        return <Component />;
+      }
+    }}
   />
 );

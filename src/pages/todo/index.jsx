@@ -1,13 +1,10 @@
 /* eslint-disable react/jsx-key */
 /* eslint-disable no-undef */
 import axios from 'axios';
-import { useContext } from 'react';
 import { useEffect, useState } from 'react';
 import { Card, Navbar, Input, Button, Modal } from '../../components';
-import { AuthContext } from '../../context/authContext';
 
 const TodoPage = () => {
-  // const { isAuth, setIsAuth } = useContext(AuthContext);
   const [todoList, setTodoList] = useState([]);
   const [task, setTask] = useState('');
   const [incompleteTask, setIncompleteTask] = useState([]);
@@ -28,7 +25,6 @@ const TodoPage = () => {
       config
     );
     data();
-    return console.log(deleteTask);
   };
 
   const addAction = async (e) => {
@@ -37,19 +33,12 @@ const TodoPage = () => {
     const addTask = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/task`, newTodo, config);
     data();
     setTask('');
-    return console.log(addTask);
   };
 
   const updateAction = async (status, id_task) => {
     const payload = { complete: status };
-    console.log('PAYLOAD', payload);
-    const updateTask = await axios.patch(
-      `${process.env.REACT_APP_BACKEND_URL}/task/${id_task}`,
-      payload,
-      config
-    );
+    await axios.patch(`${process.env.REACT_APP_BACKEND_URL}/task/${id_task}`, payload, config);
     data();
-    return console.log(updateTask);
   };
 
   useEffect(() => {
@@ -61,9 +50,6 @@ const TodoPage = () => {
     setCompleteTask(todoList.filter((data) => data.complete === true));
   }, [todoList]);
 
-  // useEffect(() => {
-  //   console.log('TODO', isAuth);
-  // }, []);
   return (
     <div className="todo-page container">
       <Navbar />

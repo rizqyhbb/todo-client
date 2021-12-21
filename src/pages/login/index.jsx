@@ -1,12 +1,13 @@
 /* eslint-disable no-undef */
 import { Input, Button, Navbar } from '../../components';
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useContext, useState } from 'react';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { ROUTES } from '../../routes';
+import { AuthContext } from '../../context/authContext';
 
 const LoginPage = () => {
+  const { setIsAuth } = useContext(AuthContext);
   const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -22,14 +23,11 @@ const LoginPage = () => {
       storedData('email', response.data.decode.email);
       storedData('first_name', response.data.decode.first_name);
       storedData('last_name', response.data.decode.last_name);
+      storedData('isAuth', true);
+      setIsAuth(window.localStorage.getItem('isAuth'));
       history.push(ROUTES.APP_TODO);
     });
   };
-
-  useEffect(() => {
-    console.log(email);
-    console.log(password);
-  }, [email, password]);
 
   return (
     <div className="login-page container">
