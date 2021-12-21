@@ -1,13 +1,11 @@
 /* eslint-disable no-undef */
-import { useContext, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Input, Button, Navbar } from '../../components';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { ROUTES } from '../../routes';
-import { AuthContext } from '../../context/authContext';
 
 const RegisterPage = () => {
-  // const { isAuth, setIsAuth } = useContext(AuthContext);
   const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -22,20 +20,11 @@ const RegisterPage = () => {
     } else {
       const data = { email, password, first_name, last_name };
       axios.post(`${process.env.REACT_APP_BACKEND_URL}/register`, data).then((response) => {
-        console.log(response);
         alert('you are registered, you can login now');
         history.push(ROUTES.LOG_IN);
       });
     }
   };
-
-  // const changeState = () => {
-  //   setIsAuth(true);
-  // };
-
-  // useEffect(() => {
-  //   console.log('REGISTER', isAuth);
-  // }, []);
   return (
     <div className="login-page container">
       <Navbar />
@@ -82,7 +71,6 @@ const RegisterPage = () => {
           Have an account? <Link to="/login">login</Link> here
         </p>
       </form>
-      {/* <Button onClick={changeState}>Ini Tombol yang berguna</Button> */}
     </div>
   );
 };

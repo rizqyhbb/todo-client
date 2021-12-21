@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import { AuthContext } from '../context/authContext';
 import { Button } from './button';
 
 export const Navbar = () => {
+  const { isAuth, setIsAuth } = useContext(AuthContext);
   const history = useHistory();
   const [navBrand, setNavBrand] = useState('');
   const [logout, setlogout] = useState('');
@@ -24,6 +26,7 @@ export const Navbar = () => {
   const signout = (e) => {
     e.preventDefault();
     window.localStorage.clear();
+    setIsAuth(false);
     history.push('/');
   };
 
